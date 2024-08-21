@@ -1,0 +1,50 @@
+<mat-toolbar class="shadow relative z-10 bg-zinc-800">
+  <mat-toolbar-row>
+    @if(currentUser){
+    <app-header-toolbar
+      [loggedUser]="currentUser.fullName"
+      class="w-full h-full"
+      (onToggleSidenav)="toggleSidenav()"
+    />
+    }
+  </mat-toolbar-row>
+</mat-toolbar>
+<mat-drawer-container class="h-[calc(100vh-64px)] w-full">
+  <mat-drawer
+    mode="side"
+    opened="true"
+    disableClose="true"
+    class="shadow border-zinc-300 w-fit rounded-none"
+    #drawer
+  >
+    <section class="min-h-full">
+      <app-sidenav [showLabels]="expandedSidenav" />
+    </section>
+  </mat-drawer>
+  <mat-drawer-content
+    class="bg-indigo-50"
+    [style.margin-left]="drawerInitMargin()"
+    [@margin]="{
+      value: expandedSidenav ? 'expanded' : 'collapsed',
+      params: { drawerInitMargin: drawerInitMargin() }
+    }"
+  >
+    <main class="min-h-full border-l flex flex-col h-full relative">
+      <app-breadcrumb class="bg-zinc-50" />
+      <div class="p-4 h-full">
+        <router-outlet />
+      </div>
+      <footer
+        class="mt-auto px-4 py-3 border border-solid border-zinc-300 flex justify-between bg-zinc-50"
+      >
+        <p class="text-zinc-400 font-thin">
+          <span> {{ year }}</span> &copy; Espuma Blanca.
+        </p>
+        <p class="text-zinc-400 font-thin">
+          Soporte Técnico: <span>0967205537</span> -
+          <span>alextp.dev&#64;gmail.com</span>
+        </p>
+      </footer>
+    </main>
+  </mat-drawer-content>
+</mat-drawer-container>

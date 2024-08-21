@@ -1,0 +1,141 @@
+<app-table-container
+  [options]="tableContainerOptions"
+  (pageChange)="onPageChange($event)"
+>
+  <ng-template #options>
+    <button
+      mat-flat-button
+      type="button"
+      class="rounded bg-orange-600"
+      (click)="openCategoryManagementDialog()"
+    >
+      <mat-icon>category</mat-icon>
+      <span class="ml-2">Categorías</span>
+    </button>
+  </ng-template>
+  <ng-template #filter>
+    <div class="flex justify-between gap-8 items-center ml-auto">
+      <form
+        class="flex items-center gap-2"
+        [formGroup]="filterForm"
+        (submit)="onFilter()"
+      >
+        <mat-form-field appearance="outline">
+          <input
+            matInput
+            placeholder="Buscar producto"
+            matTooltip="Buscar por nombre"
+            formControlName="searchValue"
+          />
+        </mat-form-field>
+
+        <mat-form-field
+          appearance="outline"
+          color="primary"
+          class="col-span-2"
+          floatLabel="always"
+        >
+          <mat-label>Categoría</mat-label>
+          <input
+            matInput
+            [formControl]="categoryNameSearch"
+            formControlName="category"
+            [matAutocomplete]="auto"
+            placeholder="Busque una categoría"
+            class="outline-zinc-200 text-right"
+          />
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            [displayWith]="displayFn"
+            (optionSelected)="onSelectChange($event)"
+          >
+            @for (category of categories; track $index) {
+            <mat-option
+              [value]="category"
+              class="bg-zinc-50 hover:bg-zinc-200"
+              >{{ category.name }}</mat-option
+            >
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+
+        @if(filterForm.value.category){
+        <mat-chip
+          (removed)="
+            filterForm.patchValue({ category: undefined });
+            getEnabledCategories()
+          "
+          class="bg-indigo-100"
+        >
+          <span class="text-xs">{{ filterForm.value.category.name }}</span>
+          <button matChipRemove type="button">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip>
+        }
+        <button mat-flat-button type="submit" class="rounded">
+          <mat-icon>search</mat-icon>
+          <span class="ml-2">Buscar</span>
+        </button>
+      </form>
+    </div>
+  </ng-template>
+  <ng-template #table>
+    <table mat-table [dataSource]="products">
+      @for (col of displayedColumns; track $index) { @if (col.columnDef !==
+      'actions') {
+      <ng-container [matColumnDef]="col.columnDef">
+        <th mat-header-cell *matHeaderCellDef>{{ col.header }}</th>
+        <td mat-cell *matCellDef="let product">
+          <p [class]="getClassFromDef(col.columnDef, product[col.columnDef])">
+            {{ getValueFromDef(col.columnDef, product[col.columnDef]) }}
+          </p>
+        </td>
+      </ng-container>
+      } @else {
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="w-40">{{ col.header }}</th>
+        <td mat-cell *matCellDef="let product">
+          <a
+            mat-icon-button
+            class="rounded-full text-yellow-600"
+            [class]="{ disabled: product.enabled === true }"
+            matTooltip="Editar"
+            [routerLink]="['/home/inventory/edit', product.id]"
+          >
+            <mat-icon>edit</mat-icon>
+          </a>
+          @if(product.enabled === false){
+          <button
+            mat-icon-button
+            matTooltip="Habilitar"
+            (click)="openConfirmDialog(product, dialogAction.ENABLE)"
+          >
+            <mat-icon class="text-purple-600">autorenew</mat-icon>
+          </button>
+          } @else {
+          <button
+            mat-icon-button
+            (click)="openConfirmDialog(product, dialogAction.DISABLE)"
+            matTooltip="Inhabilitar"
+          >
+            <mat-icon class="text-zinc-600">block</mat-icon>
+          </button>
+          } @if(authorityStorage.hasAuthority(authorities.CLIENT_DELETE)){
+          <button
+            mat-icon-button
+            (click)="openConfirmDialog(product, dialogAction.DELETE)"
+            matTooltip="Eliminar"
+          >
+            <mat-icon class="text-red-600">delete</mat-icon>
+          </button>
+          }
+        </td>
+      </ng-container>
+      } }
+
+      <tr mat-header-row *matHeaderRowDef="getColums()"></tr>
+      <tr mat-row *matRowDef="let row; columns: getColums()"></tr>
+    </table>
+  </ng-template>
+</app-table-container>

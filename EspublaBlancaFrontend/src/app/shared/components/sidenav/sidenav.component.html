@@ -1,0 +1,79 @@
+<header
+  class="max-h-28 overflow-hidden flex items-center bg-zinc-50 object rounded-br-3xl shadow-lg"
+>
+  <img
+    src="assets/img/espuma_blanca.png"
+    alt="Logo"
+    [class]="
+      showLabels()
+        ? 'w-44 h-44  mx-auto transition-all duration-200 ease-in-out'
+        : 'w-20 h-20  mx-auto transition-all duration-200 ease-in-out'
+    "
+  />
+</header>
+
+<mat-nav-list class="select-none">
+  <mat-accordion>
+    @for (item of menuItems(); track $index) { @if(item.children){
+    <mat-expansion-panel
+      class="bg-transparent border-none shadow-none rounded-none m-0"
+    >
+      <mat-expansion-panel-header
+        class="pl-4"
+        [matTooltip]="item.label"
+        [matTooltipDisabled]="showLabels()"
+        matTooltipPosition="right"
+      >
+        <mat-panel-title @widhtInOut>
+          <mat-icon matListItemIcon class="mr-0 text-zinc-700">{{
+            item.icon
+          }}</mat-icon>
+          @if(showLabels()){
+          <h5 class="ml-2 text-zinc-700 font-bold" @widhtInOut>
+            {{ item.label }}
+          </h5>
+          }
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <mat-nav-list class="p-0">
+        @for (child of item.children; track $index) {
+        <a
+          mat-list-item
+          class="rounded-none"
+          [routerLink]="child.link"
+          [matTooltip]="child.label"
+          [matTooltipDisabled]="showLabels()"
+          matTooltipPosition="right"
+        >
+          <mat-icon matListItemIcon class="mr-0 text-zinc-700">{{
+            child.icon
+          }}</mat-icon>
+          @if(showLabels()){
+          <h6 class="ml-2 text-zinc-700" @widhtInOut>
+            {{ child.label }}
+          </h6>
+          }
+        </a>
+        }
+      </mat-nav-list>
+    </mat-expansion-panel>
+    }@else {
+    <a
+      mat-list-item
+      class="rounded-none"
+      [routerLink]="item.link"
+      [matTooltip]="item.label"
+      [matTooltipDisabled]="showLabels()"
+      matTooltipPosition="right"
+    >
+      <mat-icon matListItemIcon class="mr-0 text-zinc-700">{{
+        item.icon
+      }}</mat-icon>
+      @if(showLabels()){
+      <h5 class="ml-2 text-zinc-700 font-bold" @widhtInOut>{{ item.label }}</h5>
+      }
+    </a>
+    } }
+  </mat-accordion>
+</mat-nav-list>

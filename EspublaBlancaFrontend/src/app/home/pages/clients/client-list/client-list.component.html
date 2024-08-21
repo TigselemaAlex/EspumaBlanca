@@ -1,0 +1,82 @@
+<app-table-container
+  [options]="tableContainerOptions"
+  (pageChange)="onPageChange($event)"
+>
+  <ng-template #filter>
+    <form
+      class="ml-auto flex items-center gap-2"
+      (submit)="onFilter()"
+      [formGroup]="filterForm"
+    >
+      <mat-form-field appearance="outline">
+        <input
+          matInput
+          placeholder="Buscar cliente"
+          formControlName="searchValue"
+          matTooltip="Buscar por nombre, apellido, o cédula"
+        />
+      </mat-form-field>
+      <button mat-flat-button type="submit" class="rounded">
+        <mat-icon>search</mat-icon>
+        <span class="ml-2">Buscar</span>
+      </button>
+    </form>
+  </ng-template>
+  <ng-template #table>
+    <table mat-table [dataSource]="clients">
+      @for (col of displayedColumns; track $index) { @if(col.columnDef !==
+      'actions'){
+      <ng-container [matColumnDef]="col.columnDef">
+        <th mat-header-cell *matHeaderCellDef>{{ col.header }}</th>
+        <td mat-cell *matCellDef="let client">
+          <p [class]="getClassFromDef(col.columnDef, client[col.columnDef])">
+            {{ getValueFromDef(col.columnDef, client[col.columnDef]) }}
+          </p>
+        </td>
+      </ng-container>
+      } @else {
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="w-40">{{ col.header }}</th>
+        <td mat-cell *matCellDef="let client">
+          <a
+            mat-icon-button
+            class="rounded-full text-yellow-600"
+            [class]="{ disabled: client.enabled === true }"
+            matTooltip="Editar"
+            [routerLink]="['/home/clients/edit', client.id]"
+          >
+            <mat-icon>edit</mat-icon>
+          </a>
+          @if(client.enabled === false){
+          <button
+            mat-icon-button
+            matTooltip="Habilitar"
+            (click)="openConfirmDialog(client, dialogAction.ENABLE)"
+          >
+            <mat-icon class="text-purple-600">autorenew</mat-icon>
+          </button>
+          } @else {
+          <button
+            mat-icon-button
+            (click)="openConfirmDialog(client, dialogAction.DISABLE)"
+            matTooltip="Inhabilitar"
+          >
+            <mat-icon class="text-zinc-600">block</mat-icon>
+          </button>
+          } @if(authorityStorage.hasAuthority(authorities.CLIENT_DELETE)){
+          <button
+            mat-icon-button
+            (click)="openConfirmDialog(client, dialogAction.DELETE)"
+            matTooltip="Eliminar"
+          >
+            <mat-icon class="text-red-600">delete</mat-icon>
+          </button>
+          }
+        </td>
+      </ng-container>
+      } }
+      <tr mat-header-row *matHeaderRowDef="getColums()"></tr>
+      <tr mat-row *matRowDef="let row; columns: getColums()"></tr>
+    </table>
+  </ng-template>
+</app-table-container>

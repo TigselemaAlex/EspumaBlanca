@@ -1,0 +1,49 @@
+<section class="flex gap-4">
+  @if(indicationTemplate()){
+  <div
+    class="w-[464px] flex flex-col bg-zinc-50 shadow h-fit max-h-[calc(100vh-175px)] overflow-auto"
+  >
+    <div class="sticky z-10 bg-inherit top-0">
+      <div class="p-3">
+        <h3 class="text-base text-amber-700 font-bold">Instrucciones</h3>
+      </div>
+      <mat-divider></mat-divider>
+    </div>
+
+    <div class="p-3">
+      <ng-container *ngTemplateOutlet="indicationTemplate()!">
+        <ng-content></ng-content>
+      </ng-container>
+    </div>
+  </div>
+  }
+  <div
+    class="w-full bg-zinc-50 shadow flex flex-col h-fit max-h-[calc(100vh-175px)] overflow-auto"
+  >
+    @if (headerTemplate()) {
+    <div class="sticky z-10 bg-inherit top-0">
+      <div class="p-3">
+        <ng-container *ngTemplateOutlet="headerTemplate()!">
+          <ng-content></ng-content>
+        </ng-container>
+      </div>
+      <mat-divider></mat-divider>
+    </div>
+    } @if (bodyTemplate()) {
+    <div class="p-3">
+      <ng-container *ngTemplateOutlet="bodyTemplate()!">
+        <ng-content></ng-content>
+      </ng-container>
+    </div>
+    } @if (footerTemplate()) {
+    <div class="sticky z-10 bg-inherit -bottom-0">
+      <mat-divider></mat-divider>
+      <div class="p-3">
+        <ng-container *ngTemplateOutlet="footerTemplate()!">
+          <ng-content></ng-content>
+        </ng-container>
+      </div>
+    </div>
+    }
+  </div>
+</section>

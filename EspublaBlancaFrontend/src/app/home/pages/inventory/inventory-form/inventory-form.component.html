@@ -1,0 +1,170 @@
+<app-form-container>
+  <ng-template #indication>
+    <ul class="text-zinc-700 text-xs m-0 flex flex-col gap-1">
+      <li>
+        Los campos marcados con
+        <strong class="text-amber-700">* son obligatorios.</strong>
+      </li>
+      <li>
+        La categoria que se aplicara estara colocada en la
+        <strong class="text-amber-700">etiqueta de color azul</strong>, para
+        quitarla presione en el
+        <strong class="text-amber-700">ícono "x"</strong> y para reemplazarla
+        simplemente busque una nueva categoría en
+        <strong class="text-amber-700">el buscador</strong> y seleccionela.
+      </li>
+      <li>
+        La existencia debe tener valores
+        <strong class="text-amber-700">mayores o iguales a 0.</strong>
+      </li>
+      <li>
+        La existencia mínima debe tener valores
+        <strong class="text-amber-700">mayores o iguales a 1.</strong>
+      </li>
+      <li>
+        El nombre no puede estar
+        <strong class="text-amber-700">repetido.</strong>
+      </li>
+    </ul>
+  </ng-template>
+  <ng-template #header>
+    <h3 class="text-base text-indigo-700 font-bold">{{ title }}</h3>
+  </ng-template>
+  <ng-template #body>
+    <form [formGroup]="form" class="grid grid-cols-4 gap-3">
+      <mat-form-field
+        appearance="outline"
+        color="primary"
+        class="col-span-2 h-fit"
+      >
+        <mat-label>Nombre</mat-label>
+        <input
+          matInput
+          formControlName="name"
+          placeholder="Ingrese el nombre"
+          class="outline-zinc-200"
+        />
+        @if(form.get('name')?.invalid ) {
+        <mat-error>{{ getErrorMessage("name", form) }} </mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field
+        appearance="outline"
+        color="primary"
+        class="col-span-2"
+        floatLabel="always"
+      >
+        <mat-label>Categoría</mat-label>
+
+        <input
+          matInput
+          [formControl]="searchValue"
+          formControlName="category"
+          [matAutocomplete]="auto"
+          placeholder="Busque una categoría"
+          class="outline-zinc-200 text-right"
+        />
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          [displayWith]="displayFn"
+          (optionSelected)="onSelectChange($event)"
+        >
+          @for (category of categories; track $index) {
+          <mat-option [value]="category" class="bg-zinc-50 hover:bg-zinc-200">{{
+            category.name
+          }}</mat-option>
+          }
+        </mat-autocomplete>
+        @if(form.get('category')?.invalid ) {
+        <mat-error>{{ getErrorMessage("category", form) }} </mat-error>
+        }
+      </mat-form-field>
+
+      @if(form.value.category){
+
+      <div
+        class="col-span-4 flex items-center gap-2 justify-end mb-4 shadow p-1"
+      >
+        <p>Categoría seleccionada:</p>
+        <mat-chip
+          (removed)="
+            form.patchValue({ category: undefined }); getEnabledCategories()
+          "
+          class="bg-indigo-100 w-fit"
+        >
+          <button matChipRemove type="button">
+            <mat-icon>cancel</mat-icon>
+          </button>
+          <span class="text-clip">{{ form.value.category.name }}</span>
+        </mat-chip>
+      </div>
+
+      }
+
+      <mat-form-field
+        appearance="outline"
+        color="primary"
+        class="col-span-2 row-start-3"
+      >
+        <mat-label>Existencia</mat-label>
+        <input
+          matInput
+          formControlName="stock"
+          type="number"
+          min="0"
+          step="1"
+          placeholder="Ingrese la cantidad"
+          class="outline-zinc-200 text-right"
+        />
+        <span matTextPrefix>Uds.</span>
+        @if(form.get('stock')?.invalid ) {
+        <mat-error>{{ getErrorMessage("stock", form) }} </mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field
+        appearance="outline"
+        color="primary"
+        class="col-span-2 row-start-3"
+      >
+        <mat-label>Existencia mínima</mat-label>
+        <input
+          matInput
+          formControlName="minStock"
+          type="number"
+          min="0"
+          step="1"
+          placeholder="Ingrese la cantidad"
+          class="outline-zinc-200 text-right"
+        />
+        <span matTextPrefix>Uds.</span>
+        @if(form.get('minStock')?.invalid ) {
+        <mat-error>{{ getErrorMessage("minStock", form) }} </mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" color="primary" class="col-span-4">
+        <mat-label>Descripción</mat-label>
+        <textarea
+          matInput
+          formControlName="description"
+          placeholder="Ingrese la descripción"
+          class="outline-zinc-200"
+          rows="3"
+        ></textarea>
+        @if(form.get('description')?.invalid ) {
+        <mat-error>{{ getErrorMessage("description", form) }} </mat-error>
+        }
+      </mat-form-field>
+    </form>
+  </ng-template>
+  <ng-template #footer>
+    <div class="flex gap-3 justify-end">
+      <button mat-flat-button color="primary" (click)="save()">Guardar</button>
+      <a mat-flat-button color="warn" routerLink="/home/inventory/list">
+        Cancelar
+      </a>
+    </div>
+  </ng-template>
+</app-form-container>

@@ -1,0 +1,53 @@
+<section class="bg-zinc-50 shadow">
+  @if(options().loading){
+  <div
+    class="absolute inset-0 flex justify-center items-center bg-[rgba(0,0,0,0.15)] z-20"
+  >
+    <mat-spinner diameter="32"></mat-spinner>
+  </div>
+  }
+  <header class="flex justify-between p-3 items-center z-10 flex-wrap">
+    <h3 class="text-base text-indigo-700 font-bold">{{ options().title }}</h3>
+    <div class="flex gap-x-8 gap-y-3">
+      @if(optionsTemplate()){
+      <ng-container *ngTemplateOutlet="optionsTemplate()!">
+        <ng-content></ng-content>
+      </ng-container>
+      } @if(options().newButton){
+      <a
+        mat-flat-button
+        class="text-sm rounded bg-green-600 min-w-fit"
+        [routerLink]="options().newButton!.link"
+      >
+        <mat-icon>add</mat-icon>
+        <span class="ml-2">{{ options().newButton!.label }}</span>
+      </a>
+      }
+    </div>
+  </header>
+  @if(filterTemplate()){
+  <mat-divider></mat-divider>
+  <div class="p-3 flex justify-items-end">
+    <ng-container *ngTemplateOutlet="filterTemplate()!">
+      <ng-content></ng-content>
+    </ng-container>
+  </div>
+
+  }
+  <mat-divider></mat-divider>
+  @if (tableTemplate()) {
+  <div cdkScrollable class="max-h-[calc(100vh-287px)] overflow-auto">
+    <ng-container *ngTemplateOutlet="tableTemplate()!">
+      <ng-content></ng-content>
+    </ng-container>
+  </div>
+  } @if(tableTemplate()){
+  <mat-divider></mat-divider>
+  <mat-paginator
+    [length]="options().paginator.length"
+    [pageSize]="20"
+    [pageIndex]="options().paginator.pageIndex"
+    (page)="pageChange.emit($event)"
+  ></mat-paginator>
+  }
+</section>

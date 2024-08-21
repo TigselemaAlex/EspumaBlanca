@@ -1,0 +1,30 @@
+<div
+  class="flex items-center justify-between select-none border-b shadow py-1 px-4"
+>
+  <h2 class="font-bold uppercase text-zinc-700 tracking-wide text-base">
+    {{ title }}
+  </h2>
+
+  <nav class="flex text-zinc-500 items-center">
+    @for (breadcrumb of breadcrumbs; track $index) { @if(!$last){
+
+    <a class="flex items-center gap-1 text-xs" [routerLink]="breadcrumb.url">
+      <mat-icon class="text-xl flex items-center">{{
+        breadcrumb.icon
+      }}</mat-icon>
+      <span class="hidden md:inline">{{ breadcrumb.label }}</span></a
+    >
+    <div class="flex items-center">
+      <mat-icon class="text-xl flex items-center">chevron_right</mat-icon>
+    </div>
+    } @else {
+
+    <div class="flex gap-1 text-black font-bold text-xs items-center">
+      <mat-icon class="text-xl flex items-center">{{
+        breadcrumb.icon
+      }}</mat-icon>
+      <span class="hidden md:inline">{{ breadcrumb.label }}</span>
+    </div>
+    } }
+  </nav>
+</div>

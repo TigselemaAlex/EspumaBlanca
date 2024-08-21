@@ -1,0 +1,92 @@
+<app-form-container>
+  <ng-template #indication>
+    <ul class="text-zinc-700 text-xs m-0 flex flex-col gap-1">
+      <li>
+        Seleccione haciendo click en cualquier
+        <strong class="text-amber-700">rol</strong>.
+      </li>
+      <li>
+        Una vez seleccionado el rol
+        <strong class="text-amber-700">(fondo negro)</strong> debe escojer los
+        <strong class="text-amber-700">permisos</strong> que asignara a dicho
+        rol.
+      </li>
+      <li>
+        Para guardar los cambios presione en el botón
+        <strong class="text-amber-700"> "Guardar Cambios"</strong>, caso
+        contrario deseleccione el <strong class="text-amber-700"> rol</strong> o
+        presione en <strong class="text-amber-700"> "Cancelar"</strong>.
+      </li>
+    </ul>
+  </ng-template>
+  <ng-template #header>
+    <h3 class="text-base text-indigo-700 font-bold">Listado de roles</h3>
+  </ng-template>
+  <ng-template #body>
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-3">
+      @for (role of roles; track $index) {
+      <mat-card
+        [ngClass]="[
+          'hover:cursor-pointer select-none',
+          isSameRole(role)
+            ? 'bg-zinc-900 hover:bg-zinc-800 '
+            : 'bg-indigo-900 hover:bg-indigo-800 '
+        ]"
+        (click)="selectRole(role)"
+      >
+        <mat-card-header>
+          <mat-card-title class="text-amber-300 text-lg">{{
+            role.name
+          }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div>
+            <p class="text-white">
+              No. de permisos: {{ role.permissions.length }}
+            </p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      }
+    </div>
+    @if(selectedRole){
+    <div class="border-2 border-solid mt-3">
+      <h3 class="text-base font-bold my-3 px-3">
+        Rol seleccionado:
+        <span class="text-amber-700">{{ selectedRole.name }}</span>
+      </h3>
+
+      @for (key of getModuleKey(); track $index) {
+
+      <div class="p-1 bg-indigo-900 flex gap-1 items-center">
+        <mat-icon class="text-indigo-50">arrow_right</mat-icon>
+        <h4 class="text-indigo-50 font-bold">Módulo: {{ key }}</h4>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 p-1">
+        @for (permission of getModuleValues(key); track $index) {
+        <mat-checkbox
+          class="example-margin"
+          [checked]="permission.assigned"
+          (change)="togglePermission(permission.id)"
+          ><span class="text-xs">{{ permission.name }}</span></mat-checkbox
+        >
+        }
+      </div>
+
+      }
+    </div>
+    }
+  </ng-template>
+  @if(selectedRole){
+  <ng-template #footer>
+    <div class="flex gap-3 justify-end">
+      <button mat-flat-button color="primary" (click)="save()">
+        Guardar Cambios
+      </button>
+      <button mat-flat-button color="warn" (click)="selectedRole = undefined">
+        Cancelar
+      </button>
+    </div>
+  </ng-template>
+  }
+</app-form-container>

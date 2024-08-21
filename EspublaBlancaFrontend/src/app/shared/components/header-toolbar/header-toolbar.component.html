@@ -1,0 +1,53 @@
+<header class="flex justify-between items-center h-full">
+  <section>
+    <button mat-raised-button (click)="onToggleSidenav.emit()" class="w-full">
+      <mat-icon>menu</mat-icon>
+      <span class="ml-2">Menú</span>
+    </button>
+  </section>
+
+  <section class="flex items-center gap-2 h-full">
+    <button
+      mat-flat-button
+      [mat-menu-trigger-for]="userMenu"
+      class="h-full bg-indigo-900 rounded-none"
+    >
+      {{ loggedUser() }}
+      <mat-icon>person</mat-icon>
+    </button>
+  </section>
+</header>
+
+<!-- User Config Menu -->
+<mat-menu
+  #userMenu="matMenu"
+  xPosition="before"
+  class="bg-indigo-100 shadow-lg"
+>
+  <button mat-menu-item [matMenuTriggerFor]="profileMenu">
+    <strong class="text-sm">Perfil</strong>
+    <mat-icon>account_circle</mat-icon>
+  </button>
+  <button mat-menu-item (click)="logout()">
+    <strong>Cerrar Sesión</strong>
+    <mat-icon>logout</mat-icon>
+  </button>
+</mat-menu>
+<!-- ##END## -->
+
+<!-- Profile Submenu -->
+<mat-menu #profileMenu="matMenu" class="bg-indigo-100 shadow-lg">
+  <a mat-menu-item routerLink="./profile/view">
+    Ver perfil
+    <mat-icon>account_box</mat-icon>
+  </a>
+  <a mat-menu-item routerLink="./profile/edit">
+    Editar perfil
+    <mat-icon>edit</mat-icon>
+  </a>
+  <a mat-menu-item routerLink="./profile/password">
+    Cambiar contraseña
+    <mat-icon>lock_reset</mat-icon>
+  </a>
+</mat-menu>
+<!-- ##END## -->

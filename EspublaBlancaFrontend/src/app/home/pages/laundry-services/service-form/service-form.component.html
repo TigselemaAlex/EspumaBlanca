@@ -1,0 +1,99 @@
+<app-form-container>
+  <ng-template #indication>
+    <ul class="text-zinc-700 text-xs m-0 flex flex-col gap-1">
+      <li>
+        Los campos marcados con
+        <strong class="text-amber-700">* son obligatorios.</strong>
+      </li>
+      <li>
+        El tipo de unidad pueden ser como por ejemplo:
+        <strong class="text-amber-700"
+          >libras (lb), cada unidad (c/u), kilos(kg), etc.</strong
+        >
+      </li>
+    </ul>
+  </ng-template>
+  <ng-template #header>
+    <h3 class="text-base text-indigo-700 font-bold">{{ title }}</h3>
+  </ng-template>
+
+  <ng-template #body>
+    <form [formGroup]="form" class="grid grid-cols-6 gap-3">
+      <mat-form-field
+        appearance="outline"
+        color="primary"
+        class="col-span-3 h-fit"
+      >
+        <mat-label>Nombre</mat-label>
+        <input
+          matInput
+          formControlName="name"
+          placeholder="Ingrese el nombre"
+          class="outline-zinc-200"
+        />
+        @if(form.get('name')?.invalid ) {
+        <mat-error>{{ getErrorMessage("name", form) }} </mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field
+        appearance="outline"
+        color="primary"
+        class="col-span-1 h-fit"
+      >
+        <mat-label>Precio</mat-label>
+        <input
+          matInput
+          type="number"
+          min="0.00"
+          step="0.10"
+          formControlName="price"
+          placeholder="Ingrese el precio"
+          class="outline-zinc-200 text-right"
+        />
+        <span matTextSuffix>$</span>
+        @if(form.get('price')?.invalid ) {
+        <mat-error>{{ getErrorMessage("price", form) }} </mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field
+        appearance="outline"
+        color="primary"
+        class="col-span-2 h-fit"
+      >
+        <mat-label>Tipo de unidad</mat-label>
+        <input
+          matInput
+          formControlName="unitType"
+          placeholder="Ingrese el tipo de unidad"
+          class="outline-zinc-200"
+        />
+        @if(form.get('unitType')?.invalid ) {
+        <mat-error>{{ getErrorMessage("unitType", form) }} </mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field appearance="outline" color="primary" class="col-span-6">
+        <mat-label>Descripción</mat-label>
+        <textarea
+          matInput
+          formControlName="description"
+          placeholder="Ingrese la descripción"
+          class="outline-zinc-200"
+          rows="3"
+        ></textarea>
+        @if(form.get('description')?.invalid ) {
+        <mat-error>{{ getErrorMessage("description", form) }} </mat-error>
+        }
+      </mat-form-field>
+    </form>
+  </ng-template>
+  <ng-template #footer>
+    <div class="flex gap-3 justify-end">
+      <button mat-flat-button color="primary" (click)="save()">Guardar</button>
+      <a mat-flat-button color="warn" routerLink="/home/services/list">
+        Cancelar
+      </a>
+    </div>
+  </ng-template>
+</app-form-container>

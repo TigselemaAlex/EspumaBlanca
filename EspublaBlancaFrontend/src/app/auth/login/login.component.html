@@ -1,0 +1,47 @@
+<form class="flex flex-col gap-3" [formGroup]="form" (submit)="onSubmit()">
+  <p class="mb-2 text-zinc-600">
+    Por favor, ingresa tus credenciales para continuar
+  </p>
+
+  <mat-form-field appearance="outline" color="primary">
+    <mat-label>Cédula</mat-label>
+    <input
+      matInput
+      type="text"
+      required
+      placeholder="Introduzca su cédula"
+      formControlName="ci"
+    />
+    @if (form.get('ci')?.dirty && form.get('ci')?.invalid) {
+    <mat-error>{{ getErrorMessage("ci", form) }}</mat-error>
+    }
+  </mat-form-field>
+  <mat-form-field appearance="outline" color="primary">
+    <mat-label>Contraseña</mat-label>
+    <input
+      matInput
+      [type]="hidePassword() ? 'password' : 'text'"
+      required
+      placeholder="Introduzca su contraseña"
+      autocomplete="off"
+      formControlName="password"
+    />
+    <button
+      mat-icon-button
+      matSuffix
+      type="button"
+      (click)="hidePassword.set(!hidePassword())"
+    >
+      <mat-icon>{{
+        hidePassword() ? "visibility_off" : "visibility"
+      }}</mat-icon>
+    </button>
+    @if (form.get('password')?.dirty && form.get('password')?.invalid) {
+    <mat-error>{{ getErrorMessage("password", form) }}</mat-error>
+    }
+  </mat-form-field>
+  <a class="ml-auto mb-2 text-blue-700 underline" routerLink="/auth/recover"
+    >¿Olvidaste tu contraseña?</a
+  >
+  <button mat-flat-button type="submit" class="rounded">Iniciar Sesión</button>
+</form>
