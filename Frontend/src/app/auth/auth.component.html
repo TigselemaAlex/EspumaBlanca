@@ -1,0 +1,28 @@
+<main
+  class="min-h-full h-screen flex flex-column align-items-center justify-content-center"
+  style="background-color: #292929"
+>
+  <section class="mt-auto">
+    <p-card styleClass="max-w-30rem">
+      <div
+        class="max-h-10rem overflow-hidden flex align-items-center justify-content-center"
+      >
+        <img src="assets/img/espuma_blanca.png" class="max-w-20rem" />
+      </div>
+      <h1 class="text-6xl text-center font-bold mt-2 mb-5">
+        Acceso a <br />
+        <span class="text-7xl text-cyan-100" style="font-family: 'Pacifico'"
+          >Espuma Blanca</span
+        >
+      </h1>
+      <div class="p-2">
+        <router-outlet></router-outlet>
+      </div>
+    </p-card>
+  </section>
+  <footer class="mt-auto mb-4">
+    <p class="text-gray-400 text-lg">
+      Lavandería Espuma Blanca <span>&copy; {{ currentYear }}</span>
+    </p>
+  </footer>
+</main>

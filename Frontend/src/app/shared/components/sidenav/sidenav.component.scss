@@ -1,0 +1,10 @@
+::ng-deep {
+  .p-tieredmenu .p-menuitem-active > p-tieredmenusub > .p-submenu-list {
+    background-color: var(--background-color-scheme);
+  }
+  .p-tieredmenu
+    .p-menuitem:not(.p-highlight):not(.p-disabled)
+    > .p-menuitem-content:hover {
+    background-color: var(--surface-100);
+  }
+}

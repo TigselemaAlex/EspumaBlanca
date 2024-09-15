@@ -26,5 +26,6 @@ public class DataLoader implements ApplicationListener<ApplicationReadyEvent> {
         // dataGeneratorService.generateSuperAdminUser();
         // dataGeneratorService.generateOwnerUser();
         log.atInfo().log("End loading data");
+
     }
 }

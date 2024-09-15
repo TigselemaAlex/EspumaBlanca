@@ -57,7 +57,7 @@ export class BreadcrumbComponent {
         url += `/${routeURL}`;
       }
       breadcrumbs.push({
-        label: child.snapshot.data['breadcrumb'],
+        label: child.snapshot.data['label'],
         url: url,
         icon: child.snapshot.data['icon'],
         title: child.snapshot.data['title'],

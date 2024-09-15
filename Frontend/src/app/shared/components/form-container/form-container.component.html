@@ -1,0 +1,190 @@
+<section class="flex gap-6 flex-column xl:flex-row">
+  @if(indicationTemplate()){
+  <p-card styleClass="w-full md:w-25rem">
+    <p-header>
+      <div class="px-4 pt-3">
+        <h3 class="text-yellow-300">Indicaciones</h3>
+      </div>
+    </p-header>
+    <div>
+      <ng-container *ngTemplateOutlet="indicationTemplate()!">
+        <ng-content></ng-content>
+      </ng-container>
+    </div>
+  </p-card>
+  }
+  <p-card class="w-full">
+    <p-header>
+      <div class="px-4 pt-3">
+        <h3 class="text-indigo-300 font-bold">{{ options().title }}</h3>
+      </div>
+    </p-header>
+    <form [formGroup]="form" class="mt-2 flex flex-column gap-4">
+      <div class="grid row-gap-3">
+        @for (control of options().form; track $index) {
+        <div [class]="control.class">
+          @switch (control.controlType) { @case ('text') { @if(control.key){
+          <p-floatLabel>
+            <input
+              pInputText
+              type="text"
+              [id]="control.key"
+              [readOnly]="control.readonly"
+              [placeholder]="control.placeholder || ''"
+              [formControlName]="control.key"
+              class="w-full"
+            />
+            <label [htmlFor]="control.key"
+              >{{ control.label }}
+              @if(control.required){ * } @if(control.readonly){(Solo lectura)}
+            </label>
+          </p-floatLabel>
+          @if (form.get(control.key)?.invalid && form.get(control.key)?.dirty) {
+          <esp-input-error-message
+            @slideVertical
+            [message]="getErrorMessage(control.key, form)"
+          ></esp-input-error-message>
+          } } } @case ('email') { @if(control.key){
+          <p-floatLabel>
+            <input
+              pInputText
+              type="email"
+              [id]="control.key"
+              [readOnly]="control.readonly"
+              [placeholder]="control.placeholder"
+              [formControlName]="control.key"
+              class="w-full"
+            />
+            <label [htmlFor]="control.key"
+              >{{ control.label }} @if(control.required){ *
+              }@if(control.readonly){(Solo lectura)}</label
+            >
+          </p-floatLabel>
+          @if (form.get(control.key)?.invalid && form.get(control.key)?.dirty) {
+          <esp-input-error-message
+            @slideVertical
+            [message]="getErrorMessage(control.key, form)"
+          ></esp-input-error-message>
+          } } } @case ('mask') { @if(control.key){
+          <p-floatLabel>
+            <p-inputMask
+              [mask]="control.mask"
+              unmask="true"
+              [id]="control.key"
+              [readonly]="control.readonly"
+              [placeholder]="control.placeholder"
+              [formControlName]="control.key"
+              styleClass="w-full"
+            />
+            <label [htmlFor]="control.key"
+              >{{ control.label }} @if(control.required){ *
+              }@if(control.readonly){(Solo lectura)}</label
+            >
+          </p-floatLabel>
+          @if (form.get(control.key)?.invalid && form.get(control.key)?.dirty) {
+          <esp-input-error-message
+            @slideVertical
+            [message]="getErrorMessage(control.key, form)"
+          ></esp-input-error-message>
+          } } } @case ('textArea') { @if(control.key){
+          <p-floatLabel>
+            <textarea
+              pInputTextarea
+              rows="5"
+              [id]="control.key"
+              [readOnly]="control.readonly"
+              [placeholder]="control.placeholder"
+              [formControlName]="control.key"
+              class="w-full"
+            ></textarea>
+            <label [htmlFor]="control.key"
+              >{{ control.label }} @if(control.required){ *
+              }@if(control.readonly){(Solo lectura)}</label
+            >
+          </p-floatLabel>
+          @if (form.get(control.key)?.invalid && form.get(control.key)?.dirty) {
+          <esp-input-error-message
+            @slideVertical
+            [message]="getErrorMessage(control.key, form)"
+          ></esp-input-error-message>
+          } } } @case ('number') {
+          <p-floatLabel>
+            <p-inputNumber
+              [mode]="control.currency ? 'currency' : ''"
+              [currency]="control.currency"
+              locale="en-US"
+              [id]="control.key"
+              [readonly]="control.readonly"
+              [placeholder]="control.placeholder"
+              [formControlName]="control.key"
+              styleClass="w-full"
+              class="w-full overflow-auto"
+              step="0.1"
+              [showButtons]="true"
+            ></p-inputNumber>
+            <label [htmlFor]="control.key"
+              >{{ control.label }} @if(control.required){ * }
+              @if(control.readonly){(Solo lectura)}</label
+            >
+          </p-floatLabel>
+          @if (form.get(control.key)?.invalid && form.get(control.key)?.dirty) {
+          <esp-input-error-message
+            @slideVertical
+            [message]="getErrorMessage(control.key, form)"
+          ></esp-input-error-message>
+          } } @case ('password') {
+          <p-floatLabel>
+            <p-password
+              [id]="control.key"
+              feedback="false"
+              showClear="true"
+              toggleMask="true"
+              styleClass="w-full"
+              class="w-full"
+              [placeholder]="control.placeholder"
+              [formControlName]="control.key"
+            ></p-password>
+            <label [htmlFor]="control.key"
+              >{{ control.label }} @if(control.required){ * }
+              @if(control.readonly){(Solo lectura)}</label
+            >
+          </p-floatLabel>
+          @if (form.get(control.key)?.invalid && form.get(control.key)?.dirty) {
+          <esp-input-error-message
+            @slideVertical
+            [message]="getErrorMessage(control.key, form)"
+          ></esp-input-error-message>
+          } } }
+        </div>
+        }
+      </div>
+    </form>
+
+    <p-footer>
+      <div class="flex justify-content-end gap-2">
+        <p-button
+          label="Guardar"
+          (onClick)="validateAndSave()"
+          styleClass="text-sm md:text-base"
+        />
+
+        @if(options().cancelLink){
+        <a
+          pButton
+          label="Cancelar"
+          severity="danger"
+          [routerLink]="options().cancelLink"
+          class="text-sm md:text-base"
+        ></a>
+        } @else if (options().cancelAction) {
+        <p-button
+          label="Cancelar"
+          severity="danger"
+          class="text-sm md:text-base"
+          (onClick)="options().cancelAction!()"
+        />
+        }
+      </div>
+    </p-footer>
+  </p-card>
+</section>

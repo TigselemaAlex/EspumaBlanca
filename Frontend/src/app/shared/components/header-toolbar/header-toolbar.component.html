@@ -1,0 +1,39 @@
+<header
+  class="h-4rem flex align-items-center px-1 md:px-4 justify-content-between border-bottom-1 border-white-alpha-20 background-color-scheme"
+>
+  <p-button
+    styleClass="p-button-rounded"
+    size="large"
+    severity="secondary"
+    (onClick)="onToggleSidenav.emit()"
+  >
+    <div class="border-circle">
+      <i class="pi pi-bars font-semibold"></i>
+      <span class="font-semibold sm:ml-2 hidden sm:inline">Menú</span>
+    </div>
+  </p-button>
+  <p-button
+    severity="secondary"
+    styleClass="h-full border-noround text-lg "
+    class="h-full border-noround"
+    iconPos="right"
+    (onClick)="menu.toggle($event)"
+  >
+    <p-avatar
+      [label]="avatarLabel"
+      size="large"
+      shape="circle"
+      [style]="{ backgroundColor: 'var(--primary-900)' }"
+    ></p-avatar>
+    <span class="font-semibold md:ml-2 hidden sm:inline">{{
+      loggedUser()
+    }}</span>
+  </p-button>
+</header>
+<p-tieredMenu
+  #menu
+  [popup]="true"
+  [model]="menuItems"
+  appendTo="body"
+  styleClass="background-color-scheme"
+></p-tieredMenu>

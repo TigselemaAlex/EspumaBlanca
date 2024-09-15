@@ -1,0 +1,167 @@
+@if(options().loading){
+<section
+  class="absolute top-0 bottom-0 left-0 right-0 bg-gray-900 flex justify-content-center align-items-center m-auto"
+  style="min-height: 25rem"
+>
+  <p-progressSpinner
+    strokeWidth="5"
+    styleClass="w-12rem h-12rem"
+  ></p-progressSpinner>
+</section>
+}@else {
+<p-card class="w-full">
+  <p-header>
+    <header class="px-4 pt-3">
+      <div
+        class="flex justify-content-between align-items-center gap-2 flex-wrap"
+      >
+        <h3 class="text-cyan-200">{{ options().title }}</h3>
+        <div class="flex gap-4">
+          @if(optionsTemplate()){
+          <ng-container *ngTemplateOutlet="optionsTemplate()!">
+            <ng-content></ng-content>
+          </ng-container>
+          } @if(options().newButton){ @if(options().newButton?.link){
+          <a
+            pButton
+            severity="success"
+            icon="pi pi-plus"
+            class="text-sm md:text-base"
+            [label]="options().newButton?.label || 'Nuevo'"
+            [routerLink]="options().newButton?.link"
+          ></a>
+          } @else if (options().newButton?.click) {
+          <p-button
+            severity="success"
+            icon="pi pi-plus"
+            class="text-sm md:text-base"
+            [label]="options().newButton?.label || 'Nuevo'"
+            (onClick)="options().newButton?.click()"
+          ></p-button>
+          } }
+        </div>
+      </div>
+    </header>
+    @if(filterTemplate()){
+    <p-divider></p-divider>
+    <div
+      class="px-4 flex justify-content-center md:justify-content-end align-items-center"
+    >
+      <ng-container *ngTemplateOutlet="filterTemplate()!">
+        <ng-content></ng-content>
+      </ng-container>
+    </div>
+    }
+    <p-divider></p-divider>
+  </p-header>
+  <p-table
+    [columns]="options().table.columns"
+    [value]="options().table.value"
+    styleClass="p-datatable-striped  p-datatable-sm"
+    [tableStyle]="{ 'min-width': '10rem' }"
+    selectionMode="single"
+    [scrollable]="true"
+    [(selection)]="selectedItem"
+  >
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        @for (column of columns; track $index) {
+        <th pFrozenColumn [frozen]="column.frozen">{{ column.header }}</th>
+        }
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item let-columns="columns">
+      <tr [pSelectableRow]="item">
+        @for (column of columns; track $index) { @if(column.columnDef !==
+        'actions'){
+        <td pFrozenColumn [frozen]="column.frozen">
+          <span
+            [class]="getClassFromDef(column.columnDef, item[column.columnDef])"
+          >
+            {{ getValueFromDef(column.columnDef, item[column.columnDef]) }}
+          </span>
+        </td>
+        } @else {
+        <td class="w-10rem">
+          <div class="flex gap-2">
+            @if(options().table.actions?.edit?.routerLink){
+            <a
+              pButton
+              severity="warning"
+              pTooltip="Editar"
+              tooltipPosition="bottom"
+              icon="pi pi-pencil"
+              rounded="true"
+              [routerLink]="[
+                options().table.actions?.edit?.routerLink,
+                item.id
+              ]"
+            ></a>
+            } @else if (options().table.actions?.edit?.click) {
+            <p-button
+              severity="warning"
+              pTooltip="Editar"
+              tooltipPosition="bottom"
+              icon="pi pi-pencil"
+              rounded="true"
+              (onClick)="
+                options().table.actions?.edit?.click(item.id);
+                selectedItem = item
+              "
+            />
+            } @if(item.enabled){
+            <p-button
+              icon="pi pi-ban"
+              severity="secondary"
+              rounded="true"
+              pTooltip="Inhabilitar"
+              tooltipPosition="bottom"
+              (onClick)="openConfirmDialog(item, dialogAction.DISABLE)"
+            />
+            } @else {
+            <p-button
+              icon="pi pi-check-circle"
+              severity="help"
+              rounded="true"
+              pTooltip="Habilitar"
+              tooltipPosition="bottom"
+              (onClick)="openConfirmDialog(item, dialogAction.ENABLE)"
+            />
+            }
+            <p-button
+              icon="pi pi-trash"
+              severity="danger"
+              rounded="true"
+              pTooltip="Eliminar"
+              tooltipPosition="bottom"
+              (onClick)="openConfirmDialog(item, dialogAction.DELETE)"
+            />
+          </div>
+        </td>
+        }}
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td
+          [colSpan]="options().table.columns.length"
+          class="text-white-alpha-70 text-center"
+        >
+          No se encontraron datos para mostrar.
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-paginator
+    [rows]="20"
+    (onPageChange)="pageChange.emit($event)"
+    [first]="options().paginator.state.first!"
+    [totalRecords]="options().paginator.totalRecords"
+    [showJumpToPageDropdown]="true"
+    [currentPageReportTemplate]="
+      '{currentPage} de {totalPages} páginas ({totalRecords} registros)'
+    "
+  ></p-paginator>
+</p-card>
+}
+<esp-scroll-to-top-button></esp-scroll-to-top-button>

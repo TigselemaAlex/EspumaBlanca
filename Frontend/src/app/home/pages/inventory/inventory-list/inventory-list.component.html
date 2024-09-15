@@ -1,0 +1,52 @@
+<esp-table-container
+  [options]="tableContainerOptions"
+  (pageChange)="onPageChange($event)"
+  (confirmResponse)="onConfirmationDialog($event.id, $event.action)"
+>
+  <ng-template #options>
+    <p-button
+      icon="pi pi-tags"
+      label="Categorías"
+      (onClick)="openCategoryManagementDialog()"
+    />
+  </ng-template>
+  <ng-template #filter>
+    <form
+      class="md:ml-auto flex flex-column md:flex-row md:align-items-center gap-2 md:flex-wrap"
+      (submit)="onFilter()"
+      [formGroup]="filterForm"
+    >
+      <p-iconField iconPosition="left">
+        <p-inputIcon styleClass="pi pi-search" />
+        <input
+          pInputText
+          type="text"
+          formControlName="searchValue"
+          id="searchValue"
+          pTooltip="Buscar por nombre"
+          tooltipPosition="bottom"
+          placeholder="Buscar producto"
+          class="w-full"
+        />
+      </p-iconField>
+      <p-button
+        label="Filtrar"
+        icon="pi pi-filter"
+        severity="contrast"
+        type="submit"
+        styleClass="w-full"
+      ></p-button>
+      <p-button
+        label="Limpiar"
+        icon="pi pi-eraser"
+        severity="contrast"
+        styleClass="w-full"
+        (onClick)="clearSearch()"
+      ></p-button>
+    </form>
+  </ng-template>
+</esp-table-container>
+
+<esp-category-management
+  [(visible)]="visibleCategoryManagement"
+></esp-category-management>

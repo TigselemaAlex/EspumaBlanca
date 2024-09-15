@@ -1,0 +1,23 @@
+<esp-form-container
+  [options]="options"
+  [patchData]="dataToPatch"
+  (onSave)="save($event)"
+>
+  <ng-template #indication>
+    <ul class="text-gray-100 text-sm m-0 pl-3">
+      <li>
+        Los campos marcados con
+        <strong class="text-yellow-200">* son obligatorios.</strong>
+      </li>
+      <li>
+        La cédula debe tener
+        <strong class="text-yellow-200">10 dígitos.</strong>
+      </li>
+      <li>
+        Si la cédula ya esta registrada, debe
+        <strong class="text-yellow-200"> volver a habilitar</strong> al cliente
+        y editar su información en el caso de ser necesario.
+      </li>
+    </ul>
+  </ng-template>
+</esp-form-container>

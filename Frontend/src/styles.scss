@@ -1,0 +1,87 @@
+@import "primeng/resources/themes/aura-dark-cyan/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+@import "primeflex/primeflex.css";
+@import "primeflex/themes/primeone-dark.css";
+
+:root {
+  --background-color-scheme: #18181b;
+}
+
+@font-face {
+  font-family: "Oxygen";
+  src: url("/assets/font/Oxygen-Light.ttf");
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "Oxygen";
+  src: url("/assets/font/Oxygen-Regular.ttf");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Oxygen";
+  src: url("/assets/font/Oxygen-Bold.ttf");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Pacifico";
+  src: url("/assets/font/Pacifico-Regular.ttf");
+  font-weight: 400;
+}
+
+html {
+  min-height: 100vh;
+  height: 100%;
+  width: 100vw;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  width: 100%;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    margin: 0;
+  }
+  .circle::before {
+    content: "\25CF";
+    margin-right: 0.2rem;
+  }
+
+  .text-nowrap {
+    text-wrap: nowrap;
+  }
+  .background-color-scheme {
+    background-color: var(--background-color-scheme);
+  }
+  table {
+    thead {
+      tr > th {
+        background-color: var(--cyan-900);
+      }
+    }
+    tbody {
+      tr > td:nth-child(1) {
+        color: var(--cyan-200);
+      }
+    }
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background-color: #cecece;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #67e8f9, #5c6ac4);
+}

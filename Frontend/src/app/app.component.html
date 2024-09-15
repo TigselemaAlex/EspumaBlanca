@@ -1,0 +1,26 @@
+<div class="w-full h-full"><router-outlet></router-outlet></div>
+<p-toast></p-toast>
+<p-confirmDialog
+  styleClass="w-30rem "
+  [style]="{ maxWidth: '95%', opacity: '0.85' }"
+  acceptLabel="Continuar"
+  acceptButtonStyleClass="w-9rem"
+  rejectLabel="Cancelar"
+  rejectButtonStyleClass="p-button-outlined w-9rem"
+>
+  <ng-template pTemplate="message" let-message>
+    <div class="flex flex-column align-items-center p-5 border-round">
+      <div
+        class="border-circle bg-primary inline-flex justify-content-center align-items-center h-6rem w-6rem"
+      >
+        <i class="pi pi-question text-5xl"></i>
+      </div>
+      <span
+        class="font-bold text-2xl block mb-2 mt-4 text-center text-primary uppercase"
+      >
+        {{ message.header }}
+      </span>
+      <p class="mt-4 mb-0 text-center" [innerHTML]="message.message"></p>
+    </div>
+  </ng-template>
+</p-confirmDialog>

@@ -1,0 +1,16 @@
+:host ::ng-deep {
+  .p-datatable .p-datatable-tbody > tr.p-highlight {
+    td.p-frozen-column,
+    td.p-frozen-column:hover {
+      background-color: var(--cyan-800);
+    }
+  }
+  .p-datatable.p-datatable-hoverable-rows
+    .p-datatable-tbody
+    > tr:not(.p-highlight):hover {
+    background-color: var(--gray-600);
+    td.p-frozen-column {
+      background-color: var(--gray-700);
+    }
+  }
+}

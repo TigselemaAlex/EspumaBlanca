@@ -1,0 +1,31 @@
+<p-dialog
+  header="ADMINISTRACIÓN DE CATEGORÍAS"
+  [draggable]="false"
+  [resizable]="false"
+  [modal]="true"
+  [(visible)]="visible"
+  appendTo="body"
+  contentStyleClass="flex gap-4 pt-4 overflow-hidden"
+  [contentStyle]="{ backgroundColor: '#292929' }"
+  (onHide)="
+    categoryId = undefined;
+    categoryFormVisible = false;
+    tableContainer.selectedItem = undefined
+  "
+  [closeOnEscape]="false"
+>
+  <esp-table-container
+    #tableContainer
+    [options]="tableContainerOptions"
+    (pageChange)="onPageChange($event)"
+    (confirmResponse)="onConfirmationDialog($event.id, $event.action)"
+  ></esp-table-container>
+  @if(categoryFormVisible){
+  <esp-category-form
+    @slideHorizontal
+    [(visible)]="categoryFormVisible"
+    [(category)]="categoryId!"
+    (reload)="closeAllAndReloadTable()"
+  ></esp-category-form>
+  }
+</p-dialog>

@@ -1,0 +1,38 @@
+<main class="flex min-h-full" style="background-color: #292929">
+  <div
+    class="border-white-alpha-20 sticky top-0 z-3 h-full transition-all transition-duration-300 transition-ease-in-out"
+    [style]="{ width: calculateSidebarWidth() }"
+  >
+    <esp-sidenav
+      [(showLabels)]="expandedSidenav"
+      [(isMobile)]="isMobile"
+    ></esp-sidenav>
+  </div>
+  <div
+    class="flex flex-column transition-all transition-duration-300 transition-ease-in-out"
+    [style]="{ width: 'calc(100% - ' + calculateSidebarWidth() }"
+  >
+    <esp-header-toolbar
+      class="sticky top-0 z-2"
+      [loggedUser]="currentUser.fullName"
+      (onToggleSidenav)="toggleSidenav()"
+    ></esp-header-toolbar>
+    <div class="flex flex-column z-1">
+      <esp-breadcrumb />
+      <div class="p-4">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+    <footer
+      class="flex justify-content-between border-white-alpha-20 background-color-scheme px-4 py-3 mt-auto"
+    >
+      <p class="text-gray-400 text-sm">
+        <span> {{ currentYear }}</span> &copy; Espuma Blanca.
+      </p>
+      <p class="text-gray-400 text-sm">
+        Soporte Técnico: <span>0967205537</span> -
+        <span>alextp.dev&#64;gmail.com</span>
+      </p>
+    </footer>
+  </div>
+</main>

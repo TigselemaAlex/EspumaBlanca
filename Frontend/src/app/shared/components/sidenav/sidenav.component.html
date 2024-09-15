@@ -1,0 +1,38 @@
+<section
+  class="max-h-screen border-right-1 border-white-alpha-10 h-screen background-color-scheme"
+>
+  @if(isMobile()){
+  <p-sidebar
+    [(visible)]="visible"
+    (onHide)="hideSidebar()"
+    appendTo="body"
+    [fullScreen]="true"
+  >
+    <ng-container *ngTemplateOutlet="menu"></ng-container>
+  </p-sidebar>
+  } @else {
+  <ng-container *ngTemplateOutlet="menu"></ng-container>
+  }
+</section>
+
+<ng-template #menu>
+  <header
+    class="overflow-hidden flex align-items-center justify-content-center mb-2 border-bottom-1 border-white-alpha-20"
+    style="max-height: 113px"
+  >
+    <img
+      src="assets/img/espuma_blanca.png"
+      alt="Logo"
+      [class]="isMobile() ? 'w-auto max-h-13rem' : 'w-full'"
+    />
+  </header>
+  <div [class]="isMobile() ? ' max-w-11rem' : 'px-2'">
+    <p-tieredMenu
+      [model]="menuItems"
+      [styleClass]="
+        isMobile() ? 'w-full text-sm border-none' : 'w-full border-none'
+      "
+    >
+    </p-tieredMenu>
+  </div>
+</ng-template>
